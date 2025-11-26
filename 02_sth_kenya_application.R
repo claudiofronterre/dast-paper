@@ -96,8 +96,7 @@ par0_asc <- list(beta = -2.44252,
                  sigma2 = exp(3.06358),
                  phi = exp(5.25905),
                  alpha = 1/(1 + exp(-(-0.878661))),
-                 gamma = exp(2.80133),
-                 tau2 = 1)
+                 gamma = exp(2.80133))
 
 par0_tt  <- list(beta = -2.40621,
                  sigma2 = exp(3.58584),
@@ -113,30 +112,31 @@ par0_hkw <- list(beta = -1.98672,
 
 # 3.1 Ascaris: spatio-temporal GP
 dast_asc <-
-  dast(formula = noASC ~ gp(x, y, year, nugget = NULL),
+  dast(formula = noASC ~ gp(x, y),
        den = noStudSamp, power_val = 1,
+       time = year,
        data = sth,
        par0 = par0_asc, start_pars = par0_asc,
        mda_times = mda_times,
        int_mat = intervention)
 
-# 3.2 Trichuris: simpler GP (survey_times provided separately)
+# 3.2 Trichuris: simpler GP
 dast_tt <-
-  dast(formula = noTT ~ gp(),
+  dast(formula = noTT ~  gp(x, y),
        den = noStudSamp, power_val = 1,
        data = sth,
        par0 = par0_tt, start_pars = par0_tt,
-       survey_times = year,
+       time = year,
        mda_times = mda_times,
        int_mat = intervention)
 
 # 3.3 Hookworm: simpler GP
 dast_hkw <-
-  dast(formula = noHKW ~ gp(),
+  dast(formula = noHKW ~ gp(x, y),
        den = noStudSamp, power_val = 1,
        data = sth,
        par0 = par0_hkw, start_pars = par0_hkw,
-       survey_times = year,
+       time = year,
        mda_times = mda_times,
        int_mat = intervention)
 
