@@ -1,6 +1,5 @@
-#!/usr/bin/env Rscript
 # =============================================================================
-# DAST analysis — standalone script (tidied for GitHub)
+# LF in Madagascar — DAST application 
 # =============================================================================
 # This script fits three prevalence models (GLM, GLMM, IID‑DAST) to lymphatic
 # filariasis (LF) data and performs diagnostic and projection analyses.
@@ -10,16 +9,16 @@
 #   3. Compute CIs, CRPS, and AnPIT diagnostics
 #   4. Produce LaTeX summary table and plots (AnPIT, projection maps)
 #
-# Inputs:
+# Inputs (need be stored in ./data/):
 #   - lf_clean_CF.csv
 #   - LF_MDA_Africa_2024_IU_updated.csv
+#
 # Outputs (saved to ./outputs/):
 #   - lf_anpit.pdf
 #   - lf_rounds.pdf
 #
 # =============================================================================
 
-rm(list = ls())
 options(stringsAsFactors = FALSE)
 
 # ---- Load packages ----
@@ -45,14 +44,14 @@ set.seed(123)
 data_country <- "Madagascar"
 
 # Survey data
-lf <- read.csv("lf_clean_CF.csv") %>%
+lf <- read.csv("data/lf_clean_CF.csv") %>%
   filter(country == data_country, year > 2000) %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
 lf <- st_transform(lf, crs = propose_utm(lf))
 
 # MDA coverage data
-mda_data <- read.csv("LF_MDA_Africa_2024_IU_updated.csv") %>%
+mda_data <- read.csv("data/LF_MDA_Africa_2024_IU_updated.csv") %>%
   filter(ADMIN0 == data_country) %>%
   mutate(iu_id = as.numeric(substr(IU_ID, 4, 8)))
 

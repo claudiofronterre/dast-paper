@@ -1,6 +1,5 @@
-#!/usr/bin/env Rscript
 # =============================================================================
-# STH in Kenya — DAST application (tidied for GitHub)
+# STH in Kenya — DAST application
 # =============================================================================
 # Purpose
 #   Fit the DAST model for three STH species (Ascaris, Trichuris, Hookworm)
@@ -8,9 +7,9 @@
 #   Produce MDA effect comparison plot and animated prevalence maps (grid and
 #   subcounty aggregations).
 #
-# Inputs (expected in working directory)
-#   - KenyaData.csv                      (survey data with x, y, year, subcounty, noStudSamp, noASC, noTT, noHKW)
-#   - KenyaCoverage_TotalMDA.shp (+ sidecar files)  (polygon shapefile with 'subcounty' and covYYYY fields)
+# Inputs (expected in ./data/)
+#   - KenyaData.csv (survey data with x, y, year, subcounty, noASC, noTT, noHKW)
+#   - KenyaCoverage_TotalMDA.shp (subcounty shapefile with MDA data)
 #
 # Outputs (written to ./outputs/)
 #   - MDA_effects.png
@@ -18,12 +17,10 @@
 #   - STH_admin_animation.gif
 #
 # Notes
-#   - Requires RiskMap >= 1.0.0 with functions: dast(), pred_over_grid(),
-#     pred_target_grid(), pred_target_shp(), plot_mda(), create_grid().
+#   - Requires RiskMap >= 1.0.0 
 #   - Computation can be heavy; adjust image resolution, ranges, and years if needed.
 # =============================================================================
 
-rm(list = ls())
 options(stringsAsFactors = FALSE)
 set.seed(123)
 
@@ -42,7 +39,7 @@ if (!dir.exists("outputs")) dir.create("outputs")
 
 # --------------------------- 1. Data ----------------------------------------
 # 1.1 Survey data (point locations in ESRI:102022 as provided, then projected to UTM for Kenya)
-sth <- read.csv("KenyaData.csv")
+sth <- read.csv("data/KenyaData.csv")
 
 stopifnot(all(c("x","y","year","subcounty","noStudSamp","noASC","noTT","noHKW") %in% names(sth)))
 
@@ -51,7 +48,7 @@ data_utm <- propose_utm(sth)           # choose a suitable UTM CRS for Kenya
 sth <- st_transform(sth, crs = data_utm)
 
 # 1.2 Subcounty MDA polygons
-mda_data_sf <- st_read("KenyaCoverage_TotalMDA.shp", quiet = TRUE)
+mda_data_sf <- st_read("data/KenyaCoverage_TotalMDA.shp", quiet = TRUE)
 mda_data_sf <- st_transform(mda_data_sf, crs = data_utm)
 mda_data <- as.data.frame(mda_data_sf)
 
