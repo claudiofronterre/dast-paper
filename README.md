@@ -17,10 +17,6 @@ This repository contains fully reproducible R scripts corresponding to the analy
 | `03_lf_madagascar_application.R` | Application of the DAST model to **lymphatic filariasis (LF)** data from Madagascar, including comparison with GLM and GLMM models and projection of MDA rounds needed for elimination. |
 | `04_figures.R` | Generates the figures reported in the paper using the analysis outputs and saves them to `figures/`. |
 
-Additional materials:
-- `figures/`: directory where figures are written.
-- `dast-paper.Rproj`: RStudio project file for convenient navigation.
-
 Each script can be executed independently and reproduces the corresponding figures, tables, and results reported in the paper.
 
 ---
